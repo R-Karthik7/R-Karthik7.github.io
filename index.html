@@ -154,7 +154,7 @@ section{position:relative;padding:clamp(70px,10vw,130px) 0}
 /* projects */
 .pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .pc{perspective:1000px}
-.js .sw{opacity:0;will-change:transform,opacity,filter;transform-origin:50% 60%}
+.js .pfx{opacity:0;transform-origin:50% 70%}
 .pc-in{position:relative;height:100%;display:flex;flex-direction:column;gap:12px;padding:26px 24px 24px;border-radius:22px;overflow:hidden;transition:transform .25s ease-out,border-color .3s,box-shadow .3s}
 .pc-in::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(260px circle at var(--mx,50%) var(--my,0%),rgba(255,46,99,.26),transparent 70%)}
 .pc-in:hover{border-color:rgba(255,46,99,.7);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 24px 70px rgba(0,0,0,.5),0 0 44px rgba(255,46,99,.28)}
@@ -187,17 +187,43 @@ section{position:relative;padding:clamp(70px,10vw,130px) 0}
 .v6 circle:nth-child(3n+2){animation-delay:-1.5s}.v6 circle:nth-child(3n){animation-delay:-3s}
 @keyframes cl{from{transform:translate(var(--dx),var(--dy))}to{transform:translate(0,0)}}
 
+/* projects: reel-style fly-in */
+#projects{overflow-x:clip}
+#projects .wrap{position:relative;z-index:1}
+.pfx{position:relative}
+.pfx .trail{position:absolute;pointer-events:none;opacity:0;border-radius:22px}
+.pfx .trail.l{top:8%;bottom:8%;right:96%;width:80%;background:linear-gradient(90deg,transparent,rgba(255,46,99,.28) 55%,rgba(255,255,255,.2))}
+.pfx .trail.r{top:8%;bottom:8%;left:96%;width:80%;background:linear-gradient(270deg,transparent,rgba(255,46,99,.28) 55%,rgba(255,255,255,.2))}
+.pfx .trail.b{left:8%;right:8%;top:96%;height:70%;background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(255,46,99,.28) 45%,transparent)}
+.pfx.run .pc-in>:not(.pc-n){opacity:var(--c,1);transform:translate3d(0,calc((1 - var(--c,1))*18px),0)}
+.pfx.run .pc-n{transform:translate3d(calc((1 - var(--c,1))*-50%),calc((1 - var(--c,1))*80%),0) scale(calc(1 + (1 - var(--c,1))*.9));transform-origin:100% 0;-webkit-text-stroke-color:rgba(255,255,255,calc(.13 + (1 - var(--c,1))*.42))}
+.orb{position:absolute;z-index:0;border-radius:50%;pointer-events:none;opacity:0;background:radial-gradient(circle,rgba(255,40,100,.8),rgba(255,40,100,.26) 42%,transparent 68%)}
+.orb.o1{left:-10%;bottom:4%;width:min(62vw,560px);aspect-ratio:1}
+.orb.o2{left:34%;top:30%;width:min(44vw,420px);aspect-ratio:1}
+.orb.o3{right:-10%;bottom:14%;width:min(54vw,500px);aspect-ratio:1}
+.fly .orb{animation:orbIn 2.6s cubic-bezier(.2,.7,.2,1) both,orbFloat 10s ease-in-out 2.6s infinite alternate}
+.fly .orb.o2{animation-delay:.25s,2.85s}.fly .orb.o3{animation-delay:.5s,3.1s}
+@keyframes orbIn{0%{opacity:0;transform:scale(.25) translate3d(0,60px,0)}38%{opacity:.9;transform:scale(1.45) translate3d(0,0,0)}100%{opacity:.4;transform:scale(1) translate3d(0,0,0)}}
+@keyframes orbFloat{from{opacity:.4;transform:translate3d(0,0,0) scale(1)}to{opacity:.3;transform:translate3d(3vw,-3vh,0) scale(1.12)}}
+.meteors{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.mt{position:absolute;height:2px;border-radius:2px;opacity:0;rotate:var(--r);background:linear-gradient(90deg,transparent,rgba(255,70,110,.55) 60%,#fff);animation:mtr 1s cubic-bezier(.3,.1,.6,1) both}
+.mt::after{content:"";position:absolute;right:-2px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#fff;box-shadow:0 0 10px 3px rgba(255,60,110,.9),0 0 24px 6px rgba(255,46,99,.5)}
+@keyframes mtr{0%{opacity:0;translate:0 0}12%{opacity:1}78%{opacity:1}100%{opacity:0;translate:var(--dx) var(--dy)}}
+
 /* simulator */
 .simp{padding:clamp(22px,3.4vw,40px)}
 .sim-top{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;align-items:flex-start}
 .sim-top h3{margin:0;font:800 clamp(22px,3vw,32px)/1.1 var(--disp);font-stretch:112%}
 .sim-top p{margin:8px 0 0;max-width:46ch;color:var(--mute);font-size:15px}
 .ctl{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.sw{display:flex;align-items:center;gap:10px;padding:10px 16px 10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.06);font-weight:700;font-size:14px;cursor:pointer}
-.sw i{position:relative;width:38px;height:22px;border-radius:99px;background:#3a2634;transition:background .25s}
-.sw i::after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .25s}
-.sw[aria-checked="true"] i{background:#2fd48f}.sw[aria-checked="true"] i::after{transform:translateX(16px)}
-.sw:disabled,.go:disabled{opacity:.55;cursor:not-allowed}
+.tgl{display:flex;align-items:center;gap:10px;min-height:46px;padding:8px 12px 8px 10px;border-radius:14px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);color:#fff;font-weight:700;font-size:14px;cursor:pointer;opacity:1!important;visibility:visible!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 6px 20px rgba(0,0,0,.35);touch-action:manipulation;transition:border-color .25s,background .25s,box-shadow .25s}
+.tgl i{position:relative;flex:0 0 auto;width:46px;height:26px;border-radius:99px;background:#5b3a4d;box-shadow:inset 0 0 0 1px rgba(255,255,255,.32);transition:background .25s}
+.tgl i::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.45);transition:transform .25s}
+.tgl::after{content:"OFF";margin-left:2px;padding:5px 8px;border-radius:8px;background:rgba(255,255,255,.12);font:800 10px/1 var(--disp);font-stretch:112%;letter-spacing:.14em;color:#ffb6c7}
+.tgl[aria-checked="true"]{border-color:rgba(47,212,143,.75);background:rgba(47,212,143,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 0 26px rgba(47,212,143,.25)}
+.tgl[aria-checked="true"] i{background:#2fd48f}.tgl[aria-checked="true"] i::after{transform:translateX(20px)}
+.tgl[aria-checked="true"]::after{content:"ON";background:rgba(47,212,143,.2);color:#8dffcf}
+.tgl:disabled{opacity:.8!important;cursor:not-allowed}.go:disabled{opacity:.55;cursor:not-allowed}
 .go{padding:13px 22px;border:0;border-radius:12px;background:var(--acc);color:#fff;font:800 11px/1 var(--disp);font-stretch:112%;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;box-shadow:0 8px 28px rgba(255,46,99,.5)}
 .road{position:relative;height:150px;margin-top:24px}
 .track{position:absolute;left:84px;right:56px;top:0;bottom:0}
@@ -343,9 +369,33 @@ footer{padding:36px 0 40px;border-top:1px solid var(--line);background:rgba(7,3,
   .nav ul{display:none}.nav{padding-left:16px}.row .chip{display:none}.ft{grid-template-columns:1fr}.ft nav{justify-content:flex-start}.ticker>b{display:none}
   .track{left:60px;right:44px}.band2{left:-60px;right:-44px}.amb{width:48px;top:66px}.hosp{right:-40px;width:34px}
 }
+
+/* mobile polish */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+a,button{-webkit-tap-highlight-color:rgba(255,46,99,.18)}
+button,.pill,.gbtn,.go2{touch-action:manipulation}
+@supports not (overflow:clip){html,body{overflow-x:hidden}}
+.lite .glass{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.lite .pc-in.glass{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(135deg,rgba(52,24,50,.9),rgba(22,9,26,.9))}
+.lite .nav{-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+@media (max-width:700px){
+  .ctl{width:100%}.tgl{flex:1 1 210px}.go{flex:0 0 auto;min-height:46px}
+  .gbtn.s{min-height:42px}.pill{min-height:40px}.gbtn{min-height:46px}
+  input,textarea{font-size:16px}
+  .tiles{gap:10px}.tile{width:calc((100% - 20px)/3);padding:16px 6px 12px}
+  .pc-n{font-size:78px}
+  .orb{opacity:0}
+}
+@media (max-width:420px){
+  .nav{gap:8px;padding:8px 8px 8px 14px}.logo{font-size:18px}.nav .r{gap:6px}
+  .pill{padding:10px 12px;letter-spacing:.1em}
+  .wrap{width:min(1120px,calc(100% - 32px))}
+  .pc-in{padding:22px 18px 20px}
+}
+@media (max-width:350px){.nav .pill.g{display:none}}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
-  .js .rv,.js .hd,.js .name span,.js .hero-txt>:not(.name),.js .slab,.js .hero-pic,.js .stats .stat,.js .nav,.js .sw{opacity:1;transform:none;filter:none;margin-left:0}
+  .js .rv,.js .hd,.js .name span,.js .hero-txt>:not(.name),.js .slab,.js .hero-pic,.js .stats .stat,.js .nav,.js .pfx{opacity:1;transform:none;filter:none;margin-left:0}
   .js .nav{transform:translateX(-50%)}
   .js .hd::after{transform:none}.slist path{stroke-dashoffset:0}
 }
@@ -400,7 +450,7 @@ footer{padding:36px 0 40px;border-top:1px solid var(--line);background:rgba(7,3,
   <div class="sec-head"><p class="kick">Featured work</p><h2 class="hd">Projects.</h2></div>
   <div class="pgrid" data-stagger>
 
-    <article class="pc sw"><div class="pc-in glass">
+    <article class="pc pfx"><div class="pc-in glass">
       <span class="pc-n">01</span>
       <svg class="pv v1" viewBox="0 0 128 76" aria-hidden="true"><path d="M6 52H122" stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-dasharray="6 6"/><rect x="104" y="16" width="3" height="34" fill="rgba(255,255,255,.3)"/><circle class="tlt" cx="105.5" cy="16" r="6"/><g class="mv"><rect x="6" y="38" width="24" height="13" rx="3" fill="#fff"/><path d="M30 41h7l4 4v6H30z" fill="#fff"/><path d="M15 41v7M11.5 44.5h7" stroke="#ff2e63" stroke-width="2.4"/></g></svg>
       <h3>Ambulance Smart Traffic Monitoring System</h3>
@@ -409,7 +459,7 @@ footer{padding:36px 0 40px;border-top:1px solid var(--line);background:rgba(7,3,
       <div class="lk"><a class="gbtn s" href="#lab">Simulator</a><a class="gbtn s" href="https://github.com/R-Karthik7/Ambulance-AI-priority-system" target="_blank" rel="noopener">Code <svg class="ar"><use href="#ar"/></svg></a><a class="gbtn s" href="#certs">Patent</a></div>
     </div></article>
 
-    <article class="pc sw"><div class="pc-in glass">
+    <article class="pc pfx"><div class="pc-in glass">
       <span class="pc-n">02</span>
       <svg class="pv v2" viewBox="0 0 128 76" aria-hidden="true"><g stroke="rgba(255,255,255,.32)" stroke-width="1.6" fill="none"><path d="M14 38L44 14L74 30L110 14M44 14L44 62M74 30L74 62M44 62L110 58M74 62L110 58M14 38L44 62"/></g><circle class="n" cx="14" cy="38" r="5"/><circle class="n" cx="44" cy="14" r="5"/><circle class="n" cx="74" cy="30" r="5"/><circle class="n" cx="44" cy="62" r="5"/><circle class="n" cx="110" cy="14" r="5"/><circle class="n" cx="110" cy="58" r="5"/></svg>
       <h3>Atlas, a multi-document GraphRAG studio</h3>
@@ -418,7 +468,7 @@ footer{padding:36px 0 40px;border-top:1px solid var(--line);background:rgba(7,3,
       <div class="lk"><a class="gbtn s hot" href="https://atlas-graphrag.onrender.com/" target="_blank" rel="noopener">Live <svg class="ar"><use href="#ar"/></svg></a><a class="gbtn s" href="https://github.com/R-Karthik7/atlas-GraphRAG" target="_blank" rel="noopener">Code <svg class="ar"><use href="#ar"/></svg></a></div>
     </div></article>
 
-    <article class="pc sw"><div class="pc-in glass">
+    <article class="pc pfx"><div class="pc-in glass">
       <span class="pc-n">03</span>
       <svg class="pv v3" viewBox="0 0 128 76" aria-hidden="true"><path d="M6 70H122M6 70V6" stroke="rgba(255,255,255,.25)" stroke-width="1.5" fill="none"/><polyline points="10,52 28,24 44,56 62,20 80,60 98,28 118,40"/></svg>
       <h3>Energy storage arbitrage</h3>
@@ -427,7 +477,7 @@ footer{padding:36px 0 40px;border-top:1px solid var(--line);background:rgba(7,3,
       <div class="lk"><a class="gbtn s hot" href="https://energy-storage-arbitrage.streamlit.app/" target="_blank" rel="noopener">Live <svg class="ar"><use href="#ar"/></svg></a><a class="gbtn s" href="https://github.com/R-Karthik7/energy-storage-arbitrage" target="_blank" rel="noopener">Code <svg class="ar"><use href="#ar"/></svg></a></div>
     </div></article>
 
-    <article class="pc sw"><div class="pc-in glass">
+    <article class="pc pfx"><div class="pc-in glass">
       <span class="pc-n">04</span>
       <svg class="pv v4" viewBox="0 0 128 76" aria-hidden="true"><ellipse class="sh" cx="64" cy="66" rx="20" ry="5"/><g class="pin"><path d="M64 10c-12 0-20 8-20 19 0 14 20 31 20 31s20-17 20-31c0-11-8-19-20-19z" fill="#fff"/><path d="M66 20l-9 12h7l-2 9 9-12h-7z" fill="#ff2e63"/></g></svg>
       <h3>EV charging station finder and slot booking</h3>
@@ -436,7 +486,7 @@ footer{padding:36px 0 40px;border-top:1px solid var(--line);background:rgba(7,3,
       <div class="lk"><a class="gbtn s hot" href="https://ev-charging-station-finder-and-slot-booking.lovable.app" target="_blank" rel="noopener">Live demo <svg class="ar"><use href="#ar"/></svg></a></div>
     </div></article>
 
-    <article class="pc sw"><div class="pc-in glass">
+    <article class="pc pfx"><div class="pc-in glass">
       <span class="pc-n">05</span>
       <svg class="pv v5" viewBox="0 0 128 76" aria-hidden="true"><rect x="10" y="30" width="14" height="40" rx="3"/><rect x="30" y="14" width="14" height="56" rx="3"/><rect x="50" y="36" width="14" height="34" rx="3"/><rect x="70" y="8" width="14" height="62" rx="3"/><rect x="90" y="26" width="14" height="44" rx="3"/><rect x="110" y="40" width="14" height="30" rx="3"/></svg>
       <h3>Food delivery analytics</h3>
@@ -445,7 +495,7 @@ footer{padding:36px 0 40px;border-top:1px solid var(--line);background:rgba(7,3,
       <div class="lk"><a class="gbtn s hot" href="https://food-delivery-analytics-mongo-db.streamlit.app/" target="_blank" rel="noopener">Live <svg class="ar"><use href="#ar"/></svg></a><a class="gbtn s" href="https://github.com/R-Karthik7/food-delivery-analytics-mongodb" target="_blank" rel="noopener">Code <svg class="ar"><use href="#ar"/></svg></a></div>
     </div></article>
 
-    <article class="pc sw"><div class="pc-in glass">
+    <article class="pc pfx"><div class="pc-in glass">
       <span class="pc-n">06</span>
       <svg class="pv v6" viewBox="0 0 128 76" aria-hidden="true"><g fill="#fff"><circle cx="24" cy="24" r="4" style="--dx:-14px;--dy:20px"/><circle cx="34" cy="32" r="4" style="--dx:20px;--dy:-16px"/><circle cx="20" cy="38" r="4" style="--dx:30px;--dy:10px"/></g><g fill="#ff2e63"><circle cx="64" cy="52" r="4" style="--dx:-20px;--dy:-24px"/><circle cx="74" cy="44" r="4" style="--dx:18px;--dy:12px"/><circle cx="60" cy="42" r="4" style="--dx:-30px;--dy:8px"/></g><g fill="#ffd0dc"><circle cx="102" cy="22" r="4" style="--dx:16px;--dy:30px"/><circle cx="112" cy="30" r="4" style="--dx:-24px;--dy:14px"/><circle cx="98" cy="34" r="4" style="--dx:10px;--dy:-18px"/></g></svg>
       <h3>Machine learning algorithms</h3>
@@ -462,7 +512,7 @@ footer{padding:36px 0 40px;border-top:1px solid var(--line);background:rgba(7,3,
   <div class="simp glass rv">
     <div class="sim-top">
       <div><h3>Clear the road for an ambulance</h3><p>Flip the switch to simulate a patient detected on the stretcher, then send the ambulance. Compare the two trips.</p></div>
-      <div class="ctl"><button class="sw" id="sw" role="switch" aria-checked="false"><i></i>Patient detected</button><button class="go" id="go">Dispatch</button></div>
+      <div class="ctl"><button class="tgl" id="sw" type="button" role="switch" aria-checked="false"><i></i>Patient detected</button><button class="go" id="go">Dispatch</button></div>
     </div>
     <div class="road" aria-hidden="true"><div class="track" id="track">
       <div class="band2"></div><div class="hosp">+</div><span class="ppill" id="pill">Green corridor on</span>
@@ -604,6 +654,8 @@ footer{padding:36px 0 40px;border-top:1px solid var(--line);background:rgba(7,3,
       still=matchMedia('(prefers-reduced-motion:reduce)').matches,
       fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
 
+  if(matchMedia('(pointer:coarse)').matches||innerWidth<700)de.classList.add('lite');
+
   /* change this to your resume file or link */
   var RESUME_URL='KARTHIK_RESUME.pdf';
   all('[data-resume]').forEach(function(a){a.setAttribute('href',RESUME_URL)});
@@ -625,12 +677,15 @@ footer{padding:36px 0 40px;border-top:1px solid var(--line);background:rgba(7,3,
   var prog=$('prog'),hero=$('top'),nav=$('nav'),ids=['projects','lab','about','focus','skills','stack','certs','contact'],links={};
   all('.nav li a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a});
   var spyMap={lab:'projects',stack:'skills'};
-  function onScroll(){
-    var y=window.scrollY||de.scrollTop,h=de.scrollHeight-innerHeight;
+  var sq=false;
+  function onScroll(){if(sq)return;sq=true;requestAnimationFrame(doScroll)}
+  function doScroll(){
+    sq=false;
+    var y=window.scrollY||de.scrollTop,h=de.scrollHeight-innerHeight,cur=null;
+    ids.forEach(function(id){var el=$(id);if(el&&el.getBoundingClientRect().top<innerHeight*.45)cur=id});
+    cur=spyMap[cur]||cur;
     prog.style.transform='scaleX('+(h>0?clamp(y/h,0,1):0)+')';
     if(y<innerHeight*1.4&&!still)hero.style.setProperty('--sy',y);
-    var cur=null;ids.forEach(function(id){var el=$(id);if(el&&el.getBoundingClientRect().top<innerHeight*.45)cur=id});
-    cur=spyMap[cur]||cur;
     Object.keys(links).forEach(function(k){links[k].classList.toggle('act',k===cur)});
   }
 
@@ -865,37 +920,137 @@ footer{padding:36px 0 40px;border-top:1px solid var(--line);background:rgba(7,3,
     heroGo=function(){if(started)return;started=true;if(built)begin()};
   })();
 
-  /* ===== projects: cards spiral in with 3D rotation and blur, then tilt back as you scroll past ===== */
+  /* ===== projects: meteors streak across, the cards spin round a 3D ring and slow to a stop, then fly into the grid
+     (ghost number first, then content). Tilt back when you scroll past. On phones each card orbits in on its own. ===== */
   (function(){
-    var grid=document.querySelector('.pgrid'),cards=grid?all('.pc.sw',grid):[];
-    if(!cards.length||still)return;
-    var st=cards.map(function(){return{p:0,q:0,s:''}}),cols=3,first=true;
-    function ease(t){return 1-Math.pow(1-t,3)}
-    function meas(){cols=Math.max(1,getComputedStyle(grid).gridTemplateColumns.split(' ').length)}
-    meas();addEventListener('resize',meas);
-    function tick(){
-      var vh=innerHeight,gt=grid.getBoundingClientRect().top,go=grid.offsetTop;
-      cards.forEach(function(c,i){
-        var top=gt+(c.offsetTop-go),bot=top+c.offsetHeight,col=i%cols,dir=i%2?1:-1,o=st[i];
-        var tp=clamp((vh*.98-top)/(vh*.6)-col*.07,0,1),tq=clamp((vh*.3-bot)/(vh*.55),0,1);
-        if(first){o.p=tp;o.q=tq}else{o.p+=(tp-o.p)*.12;o.q+=(tq-o.q)*.12}
-        var t=1-ease(o.p),e=Math.pow(o.q,1.4),str,flt;
-        if(t<.002&&e<.002){str='';flt='none';c.style.opacity=1}
-        else{
-          var ang=i*1.05+t*Math.PI*2.4*dir,R=Math.min(innerWidth*.42,440)*t,
-              x=Math.cos(ang)*R,y=Math.sin(ang)*R*.5+t*180-e*90,z=-t*300-e*260,
-              rx=t*40+e*55,ry=-t*85*dir+e*20*dir,rz=t*150*dir-e*12*dir,sc=1-.5*t-.12*e,
-              bl=t*9+e*5;
-          str='perspective(1100px) translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,'+z.toFixed(1)+'px) rotateX('+rx.toFixed(1)+'deg) rotateY('+ry.toFixed(1)+'deg) rotateZ('+rz.toFixed(1)+'deg) scale('+sc.toFixed(3)+')';
-          flt=bl>.3?'blur('+bl.toFixed(1)+'px)':'none';
-          c.style.opacity=(Math.min(1,(1-t)*1.8)*(1-e*.85)).toFixed(3);
-        }
-        if(str!==o.s){c.style.transform=str;c.style.filter=flt;o.s=str}
-        c.style.pointerEvents=(t<.15&&e<.4)?'':'none';
+    var sec=$('projects'),grid=document.querySelector('.pgrid'),cards=grid?all('.pc.pfx',grid):[];
+    if(!sec||!cards.length)return;
+    function showAll(){cards.forEach(function(c){c.style.opacity=1})}
+    if(still){showAll();return}
+    try{
+      var TM=500,TR=2000,TL=2000,TLD=1100,PI=Math.PI,
+          cols=3,vis=false,run=false,last=performance.now(),first=true,flying=false,seq=false,T0=0,mtDone=false,gp='',po='';
+      function lite(){return de.classList.contains('lite')}
+      function meas(){cols=Math.max(1,getComputedStyle(grid).gridTemplateColumns.split(' ').length)}
+      meas();addEventListener('resize',meas);
+      var mtBox=document.createElement('div');mtBox.className='meteors';mtBox.setAttribute('aria-hidden','true');sec.insertBefore(mtBox,sec.firstChild);
+      ['o1','o2','o3'].forEach(function(k){var o=document.createElement('i');o.className='orb '+k;o.setAttribute('aria-hidden','true');sec.insertBefore(o,sec.firstChild)});
+      var st=cards.map(function(c){
+        var tr=document.createElement('i');tr.className='trail';tr.setAttribute('aria-hidden','true');c.insertBefore(tr,c.firstChild);
+        return{on:false,t0:0,q:0,tr:tr,run:false,s:'',f:'',c:'',o:'',tc:''}
       });
-      first=false;requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
+      function meteors(ay){
+        var n=lite()?7:12,W=sec.offsetWidth,i;
+        for(i=0;i<n;i++)(function(){
+          var m=document.createElement('i'),len=120+Math.random()*180,phi=(135+Math.random()*22)*PI/180,dist=520+Math.random()*520,
+              x=W*(.2+Math.random()*.85),y=ay-380+Math.random()*420,d=800+Math.random()*700,dl=Math.random()*850;
+          m.className='mt';
+          m.style.cssText='width:'+len.toFixed(0)+'px;left:'+x.toFixed(0)+'px;top:'+y.toFixed(0)+'px;--r:'+phi.toFixed(3)+'rad;--dx:'+(Math.cos(phi)*dist).toFixed(0)+'px;--dy:'+(Math.sin(phi)*dist).toFixed(0)+'px;animation-duration:'+d.toFixed(0)+'ms;animation-delay:'+dl.toFixed(0)+'ms';
+          mtBox.appendChild(m);
+          setTimeout(function(){if(m.parentNode)m.parentNode.removeChild(m)},d+dl+300);
+        })();
+      }
+      function hide(c,o){
+        if(o.s==='hide')return;
+        c.style.opacity=0;c.style.transform='';c.style.filter='none';c.style.pointerEvents='none';c.style.willChange='';
+        c.classList.remove('run');o.run=false;o.s='hide';o.o='';o.f='';o.c='';
+      }
+      function tick(now){
+        if(!vis||document.hidden){run=false;return}
+        var dt=Math.min(.05,(now-last)/1000);last=now;
+        var vh=innerHeight,vw=innerWidth,lt=lite(),gt=grid.getBoundingClientRect().top,gH=grid.offsetHeight,gW=grid.offsetWidth,
+            go=grid.offsetTop,gl=grid.offsetLeft,k=1-Math.exp(-dt*9),ring=cols>1,n=cards.length,i,
+            tops=[],bots=[],sx=[],sy=[];
+        for(i=0;i<n;i++){var cc=cards[i],ot=cc.offsetTop-go;tops[i]=gt+ot;bots[i]=gt+ot+cc.offsetHeight;sx[i]=cc.offsetLeft-gl+cc.offsetWidth/2;sy[i]=ot+cc.offsetHeight/2}
+        var cx=gW/2,cy=Math.min(gH/2,vh*.22),anyOn=false,allLanded=true;
+        /* sequence control */
+        if(ring){
+          if(!seq&&gt<vh*.5){
+            seq=true;
+            if(gt+gH<0)T0=now-1e5;
+            else{T0=now;meteors(go+cy);
+              for(i=0;i<n;i++){var d=i%cols,cl=cols>=3?(d===0?'r':d===1?'b':'l'):(d===0?'r':'l');st[i].tr.className='trail '+cl}}
+          }else if(seq&&gt>vh*1.1){seq=false}
+          anyOn=seq;
+          var cur='50% '+cy.toFixed(0)+'px';if(seq&&po!==cur){grid.style.perspectiveOrigin=cur;po=cur}
+        }else{
+          for(i=0;i<n;i++){
+            var o0=st[i];
+            if(!o0.on){
+              if(tops[i]<vh*.88){
+                o0.on=true;
+                if(bots[i]<0)o0.t0=now-1e5;
+                else{
+                  o0.t0=now;
+                  o0.tr.className='trail '+(i%2?'r':'l');
+                  if(!mtDone){mtDone=true;meteors(go+(cards[i].offsetTop-go)+60)}
+                }
+              }
+            }else if(tops[i]>vh*1.12){o0.on=false}
+            if(o0.on)anyOn=true;
+          }
+          if(!anyOn)mtDone=false;
+        }
+        /* write pass */
+        for(i=0;i<n;i++){
+          var c=cards[i],o=st[i],bot=bots[i];
+          var tq=clamp((vh*.3-bot)/(vh*.55),0,1);
+          if(first)o.q=tq;else o.q+=(tq-o.q)*k;
+          var e=Math.pow(o.q,1.3),active=ring?seq:o.on;
+          if(!active){hide(c,o);continue}
+          var tx,ty,tz,ry,bl,op,cv,tro,done,persp;
+          if(ring){
+            var T=now-T0,u=clamp((T-TM)/TR,0,1),eu=1-Math.pow(1-u,3),sp=(1-u)*(1-u),
+                w=clamp((T-TL-i*80)/TLD,0,1),ew=w<.5?4*w*w*w:1-Math.pow(-2*w+2,3)/2,
+                a=(540*(1-eu)+(i-(n-1)/2)*(360/n)*(1-ew))*PI/180,
+                R=Math.min(vw*.4,520),dn=((Math.cos(a)+1)/2)*(1-ew)+ew,fade=clamp((T-TM+100)/500,0,1);
+            tx=(cx+R*Math.sin(a)-sx[i])*(1-ew);
+            ty=(cy+Math.sin(a*2+i)*16-sy[i])*(1-ew);
+            tz=R*Math.cos(a)*(1-ew);
+            ry=a*180/PI;
+            bl=(lt?3:8)*sp*(.4+.6*dn)+(lt?2:4)*Math.sin(PI*ew);
+            op=fade*(.4+.6*dn);
+            cv=clamp((ew-.35)/.55,0,1);tro=Math.sin(PI*ew)*.85;
+            done=ew>=1;persp=done;if(!done)allLanded=false;
+          }else{
+            var T2=now-o.t0,u2=clamp(T2/1700,0,1),eu2=1-Math.pow(1-u2,3),dir=i%2?1:-1,
+                a2=dir*170*(1-eu2)*PI/180,R2=vw*.62,near=(Math.cos(a2)+1)/2;
+            tx=R2*Math.sin(a2);ty=(1-eu2)*vh*.1;tz=R2*(Math.cos(a2)-1);
+            ry=a2*180/PI;bl=(lt?3:8)*(1-u2)*(1-u2);
+            op=clamp(T2/300,0,1)*(.35+.65*near);
+            cv=clamp((u2-.5)/.45,0,1);tro=(1-u2)*.5;
+            done=u2>=1;persp=true;
+          }
+          if(done&&e<.002){
+            if(o.run){c.classList.remove('run');c.style.removeProperty('--c');c.style.willChange='';o.run=false}
+            if(o.s!==''){c.style.transform='';c.style.filter='none';c.style.opacity=1;c.style.pointerEvents='';o.tr.style.opacity=0;o.s='';o.o='';o.f='';o.c=''}
+            continue;
+          }
+          if(!o.run){c.classList.add('run');c.style.willChange='transform,opacity';o.run=true}
+          cv=cv*cv*(3-2*cv)*(1-clamp(e*1.8,0,1));
+          bl+=lt?0:e*5;op*=1-e*.9;
+          var str=(persp?'perspective(1000px) ':'')+'translate3d('+tx.toFixed(1)+'px,'+(ty-e*34).toFixed(1)+'px,'+(tz-e*240).toFixed(1)+'px) rotateX('+(e*52).toFixed(1)+'deg) rotateY('+ry.toFixed(1)+'deg) scale('+(1-e*.14).toFixed(3)+')',
+              flt=bl>.4?'blur('+bl.toFixed(1)+'px)':'none',ops=op.toFixed(3),cs=cv.toFixed(3);
+          if(str!==o.s){c.style.transform=str;o.s=str}
+          if(flt!==o.f){c.style.filter=flt;o.f=flt}
+          if(ops!==o.o){c.style.opacity=ops;o.o=ops}
+          if(cs!==o.c){c.style.setProperty('--c',cs);o.c=cs}
+          o.tr.style.opacity=(tro*(1-e)).toFixed(2);
+          c.style.pointerEvents=(cv>.7&&e<.5)?'':'none';
+        }
+        /* grid perspective only while the ring is in play */
+        var want=ring?(seq&&!allLanded?'1000px':'none'):'none';
+        if(want!==gp){grid.style.perspective=want;gp=want}
+        if(anyOn&&!flying){flying=true;sec.classList.add('fly')}
+        first=false;requestAnimationFrame(tick);
+      }
+      function start(){if(run)return;run=true;last=performance.now();requestAnimationFrame(tick)}
+      new IntersectionObserver(function(en){
+        vis=en[0].isIntersecting;
+        if(vis)start();else if(flying){flying=false;sec.classList.remove('fly')}
+      },{rootMargin:'300px 0px 300px 0px'}).observe(grid);
+      setTimeout(function(){if(first&&vis)showAll()},4000);
+    }catch(err){showAll()}
   })();
 
   /* ===== about: framed photo hangs from a nail and swings like a real pendulum (drag it!) ===== */
